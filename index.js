@@ -9,6 +9,10 @@ const app = express()
 app.use(express.static('public'))
 
 // Routes
+const auth = require('./routes/auth')
+app.use('/api/auth', auth)
+// TODO: Events CRUD: create, login, renew
+
 /* app.get('/', (req, res) => {
   console.log('/ required')
 
