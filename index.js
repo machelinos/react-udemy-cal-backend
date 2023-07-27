@@ -8,6 +8,9 @@ const app = express()
 // Serve static site in '/'
 app.use(express.static('public'))
 
+// parse and read body request
+app.use(express.json())
+
 // Routes
 const auth = require('./routes/auth')
 app.use('/api/auth', auth)
