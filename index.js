@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const { dbConnection } = require('./database/config')
 
 // Require dotenv.config
@@ -9,6 +10,9 @@ const app = express()
 
 // Connect to database
 dbConnection()
+
+// CORS
+app.use(cors())
 
 // Serve static site in '/'
 app.use(express.static('public'))
