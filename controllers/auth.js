@@ -2,11 +2,41 @@ const { response } = require('express')
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 
-const loginUser = (req, res = response) => {
-  res.status(200).json({
-    ok: true,
-    msg: 'Login',
-  })
+const loginUser = async (req, res = response) => {
+  try {
+    const { email, password } = req.body
+
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'Incorrect credentials',
+      })
+    }
+
+    const validPassword = bcrypt.compareSync(password, user.password)
+
+    if (!validPassword) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'Incorrect credentials',
+      })
+    }
+
+    //Generate JWT
+
+    res.status(200).json({
+      ok: true,
+      uid: user.id,
+      name: user.name,
+    })
+  } catch (error) {
+    console.log('error')
+    res.status(500).json({
+      ok: false,
+      msg: 'There was an error. Contact admin',
+    })
+  }
 }
 
 const createNewUser = async (req, res = response) => {
