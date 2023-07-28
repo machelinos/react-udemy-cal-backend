@@ -10,12 +10,22 @@ const loginUser = (req, res = response) => {
 
 const createNewUser = async (req, res = response) => {
   try {
-    const user = new User(req.body)
+    const { email } = req.body
+    let user = await User.findOne({ email })
+    if (user) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'The email is taken',
+      })
+    }
+
+    user = new User(req.body)
     await user.save()
 
     res.status(201).json({
       ok: true,
-      msg: 'Create user',
+      uid: user.id,
+      name: user.name,
     })
   } catch (error) {
     console.log('error')
