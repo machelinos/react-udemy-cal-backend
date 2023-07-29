@@ -23,7 +23,9 @@ app.use(express.json())
 // Routes
 const auth = require('./routes/auth')
 app.use('/api/auth', auth)
-// TODO: Events CRUD: create, login, renew
+
+const events = require('./routes/events')
+app.use('/api/events', events)
 
 /* app.get('/', (req, res) => {
   console.log('/ required')
